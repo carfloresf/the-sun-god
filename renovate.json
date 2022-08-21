@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "schedule:weekly"
+  ],
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
+  "labels": ["importance/low", "difficulty/low", "process/needs-review", "type/feature", "dependency"],
+  "vulnerabilityAlerts": {
+    "labels": ["security"]
+  },
+  "force": {
+    "constraints": {
+      "go": "1.19"
+    }
+  }
+}
