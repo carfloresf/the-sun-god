@@ -17,7 +17,7 @@ const (
 						INTO post(id,title,author,subreddit,link,content,score,promoted,nsfw) 
 						VALUES    ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	updatePostScoreQuery = `UPDATE post SET score = $1 WHERE id = $2`
-	countTotalPostsQuery = `SELECT COUNT(*) FROM post`
+	countTotalPostsQuery = `SELECT COUNT(*) FROM post WHERE promoted = false`
 	queryPosts           = `SELECT id,title,author,subreddit,link,content,score,promoted,nsfw,created_at 
 							FROM post WHERE promoted = $1 ORDER BY score DESC, created_at DESC LIMIT $2 OFFSET $3;`
 	queryPromotedPosts = `SELECT id,title,author,subreddit,link,content,score,promoted,nsfw,created_at 
@@ -42,16 +42,10 @@ func NewStorage(config *config.DB) (*DB, error) {
 		Conn: sqliteDatabase,
 	}
 
-	err = db.prepareAllStatements()
-	if err != nil {
-		log.Errorf("error preparing statements: %s", err)
-		return nil, err
-	}
-
 	return &db, nil
 }
 
-func (d *DB) prepareAllStatements() error {
+func (d *DB) PrepareAllStatements() error {
 	d.preparedStatements = make(map[string]*sql.Stmt)
 
 	err := d.prepareStatements(allStatements)

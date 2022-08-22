@@ -1,9 +1,9 @@
 http:
   address: '0.0.0.0'
-  port: '8082'
+  port: '8090'
 
 db:
-  db_file: 'db/feed.db'
+  db_file: 'tests/feed-test.db'
 
 subreddits:
   sr_file: 'data/subreddits.txt'

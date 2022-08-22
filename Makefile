@@ -13,8 +13,8 @@ run:
 test:
 	./scripts/unit-test.sh
 
-integration-test:
-	./scripts/integration-test.sh
+integration-test: build
+	./scripts/integration-test.sh $(APP_EXECUTABLE) $(APP_NAME)
 
 lint:
 	./scripts/lint.sh

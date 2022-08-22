@@ -1,7 +1,7 @@
 # Feed API challenge
 
 # How to start DB?
-- This app uses SQLite3. You don't need to install anything.
+- This app uses SQLite3. You don't need to start it.
 
 # How to build?
 - Run `make build` to compile the project directly on your OS (tested on MAC M1), binary will be added to build directory, it was tested with go 1.19+.
@@ -12,7 +12,7 @@
 # How to run tests?
 - Run `make lint` to run linter.
 - Run `make test` to execute unit tests.
-- Run `make integration-test` to execute integration tests.
+- Run `make integration-test` to execute integration tests, you need [Venom](https://github.com/ovh/venom) installed.
 
 # Implementation details
 - This app uses:
@@ -20,9 +20,9 @@
   - [Gin] to handle requests, responses, validations (validator V10).
   - [SQLite3] to store data.
   - [Migrate] to manage database migrations.
-  - [sqlMock & Moq] to mock dependencies.
-  - [Golangci-lint] to lint code.
-  - [Venom] to run integration tests (WIP).
+  - [sqlMock & Moq] to mock dependencies in unit-tests.
+  - [golangci-lint](https://github.com/golangci/golangci-lint) to lint code.
+  - [Venom](https://github.com/ovh/venom) to run integration tests (You have to install it, script will download it only for Mac M1/M2).
   - Valid SubReddits are stored in a txt file that is loaded at startup.
 
 # Postman

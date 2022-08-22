@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -14,6 +15,8 @@ func main() {
 	var configFile string
 	flag.StringVar(&configFile, configFileKey, defaultConfigFile, configFileUsage)
 	flag.Parse()
+
+	log.Println("configFile: ", configFile)
 
 	execute(configFile)
 }

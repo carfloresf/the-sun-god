@@ -53,7 +53,7 @@ func TestDB_prepareAllStatements(t *testing.T) {
 
 			tt.mockClosure(mock)
 
-			err := d.prepareAllStatements()
+			err := d.PrepareAllStatements()
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {

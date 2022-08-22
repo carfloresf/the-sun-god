@@ -18,3 +18,7 @@ build/
 tmp/
 
 .DS_Store
+
+results/
+
+venom

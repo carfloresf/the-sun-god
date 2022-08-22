@@ -24,12 +24,12 @@ import (
 func execute(path string) {
 	config, err := config.NewConfig(path)
 	if err != nil {
-		log.Fatal("config error", err)
+		log.Fatal(err)
 	}
 
 	storageDB, err := storage.NewStorage(&config.DB)
 	if err != nil {
-		log.Fatal("error creating storage", err)
+		log.Fatal("error creating storage: ", err)
 	}
 
 	driver, err := sqlite3.WithInstance(storageDB.Conn, &sqlite3.Config{})
@@ -46,6 +46,11 @@ func execute(path string) {
 
 	if err = m.Up(); err != nil && err != migrate.ErrNoChange {
 		log.Errorf("migration error: %s", err)
+	}
+
+	err = storageDB.PrepareAllStatements()
+	if err != nil {
+		log.Fatalf("error preparing statements: %s", err)
 	}
 
 	router, err := router.InitRouter(storageDB)
