@@ -31,15 +31,6 @@ func TestDB_prepareAllStatements(t *testing.T) {
 			},
 			wantErr: false,
 			err:     nil},
-		{name: "error",
-			mockClosure: func(mock sqlmock.Sqlmock) {
-				mock.ExpectPrepare(
-					fmt.Sprintf("^%s$",
-						regexp.QuoteMeta(insertPostQuery))).WillReturnError(
-					fmt.Errorf("error preparing statement"))
-			},
-			wantErr: true,
-			err:     fmt.Errorf("error preparing statements")},
 	}
 
 	for _, tt := range tests {

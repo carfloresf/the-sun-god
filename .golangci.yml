@@ -22,9 +22,11 @@ linters-settings:
     line-length: 150
   funlen:
     lines: 90
+    statements: 50
 issues:
   exclude-rules:
     - path: _test\.go
       linters:
         - funlen
         - maligned
+        - dupl

@@ -239,8 +239,8 @@ func TestService_CreatePost(t *testing.T) {
 					Link:      "http//test.com",
 				},
 			}, func() {
-			subreddit.Set("/r/test")
-		},
+				subreddit.Set("/r/test")
+			},
 			uuid.UUID{},
 			true,
 			ErrMutuallyExclusiveFields,
@@ -271,8 +271,8 @@ func TestService_CreatePost(t *testing.T) {
 					Content:   "test content",
 				},
 			}, func() {
-			subreddit.Set("/r/testxxx")
-		},
+				subreddit.Set("/r/testxxx")
+			},
 			uuid.UUID{},
 			true,
 			fmt.Errorf("unable to create post"),
@@ -411,7 +411,9 @@ func Test_insertAllPromotedPosts(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equalf(t, tt.want, insertAllPromotedPosts(tt.args.posts, tt.args.promotedPosts), "insertAllPromotedPosts(%v, %v)", tt.args.posts, tt.args.promotedPosts)
+			assert.Equalf(t, tt.want,
+				insertAllPromotedPosts(tt.args.posts, tt.args.promotedPosts), "insertAllPromotedPosts(%v, %v)",
+				tt.args.posts, tt.args.promotedPosts)
 		})
 	}
 }

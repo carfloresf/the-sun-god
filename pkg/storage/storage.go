@@ -3,6 +3,7 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+	"sync"
 
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
@@ -24,7 +25,7 @@ const (
 							FROM post WHERE promoted = true ORDER BY RANDOM() LIMIT $1;`
 )
 
-var allStatements = []string{insertPostQuery, updatePostScoreQuery, countTotalPostsQuery, queryPosts, queryPromotedPosts}
+var once sync.Once
 
 type DB struct {
 	Conn               *sql.DB
@@ -46,15 +47,20 @@ func NewStorage(config *config.DB) (*DB, error) {
 }
 
 func (d *DB) PrepareAllStatements() error {
-	d.preparedStatements = make(map[string]*sql.Stmt)
+	var err error
 
-	err := d.prepareStatements(allStatements)
-	if err != nil {
-		log.Errorln("error preparing statements:", err)
-		return err
-	}
+	once.Do(func() {
+		var allStatements = []string{insertPostQuery, updatePostScoreQuery, countTotalPostsQuery, queryPosts, queryPromotedPosts}
+		d.preparedStatements = make(map[string]*sql.Stmt)
 
-	return nil
+		err = d.prepareStatements(allStatements)
+		if err != nil {
+			log.Errorln("error preparing statements:", err)
+			return
+		}
+	})
+
+	return err
 }
 
 func (d *DB) prepareStatements(queries []string) error {

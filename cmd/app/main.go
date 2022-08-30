@@ -13,10 +13,12 @@ const (
 
 func main() {
 	var configFile string
+
 	flag.StringVar(&configFile, configFileKey, defaultConfigFile, configFileUsage)
 	flag.Parse()
 
-	log.Println("configFile: ", configFile)
-
-	execute(configFile)
+	err := execute(configFile)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -1,8 +1,7 @@
 package service
 
 import (
-	"fmt"
-
+	"errors"
 	"github.com/google/uuid"
 	"github.com/spf13/cast"
 
@@ -11,8 +10,8 @@ import (
 	"github.com/carfloresf/the-sun-god/pkg/subreddit"
 )
 
-var ErrMutuallyExclusiveFields = fmt.Errorf("link and content are mutually exclusive fields")
-var ErrLinkOrContentNotFound = fmt.Errorf("link or content are needed")
+var ErrMutuallyExclusiveFields = errors.New("link and content are mutually exclusive")
+var ErrLinkOrContentNotFound = errors.New("link or content are needed")
 
 type GetFeedResponse struct {
 	Posts      []model.Post `json:"data"`
