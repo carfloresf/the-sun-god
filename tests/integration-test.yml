@@ -1,0 +1,147 @@
+name: Feed-API Testsuite
+testcases:
+  - name: GET Feed 0 items - 5 seconds timeout
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:8090/v1/feed?page=1&limit=20
+        timeout: 5
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.timeseconds ShouldBeLessThan 2
+          - result.bodyjson ShouldContainKey pagination
+          - result.bodyjson ShouldContainKey data
+          - result.bodyjson.pagination ShouldNotBeEmpty
+          - result.bodyjson.data ShouldBeEmpty
+          - result.bodyjson.pagination.total ShouldEqual 0
+          - result.bodyjson.pagination.pagecount ShouldEqual 0
+          - result.bodyjson.pagination.limit ShouldEqual 20
+          - result.bodyjson.pagination.page ShouldEqual 1
+  - name: GET Feed 0 items - 5 seconds timeout - no query params
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:8090/v1/feed
+        timeout: 5
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.timeseconds ShouldBeLessThan 2
+          - result.bodyjson ShouldContainKey pagination
+          - result.bodyjson ShouldContainKey data
+          - result.bodyjson.pagination ShouldNotBeEmpty
+          - result.bodyjson.data ShouldBeEmpty
+          - result.bodyjson.pagination.total ShouldEqual 0
+          - result.bodyjson.pagination.pagecount ShouldEqual 0
+          - result.bodyjson.pagination.limit ShouldEqual 25
+          - result.bodyjson.pagination.page ShouldEqual 1
+  - name: Create Post First item - 5 seconds timeout
+    steps:
+      - type: http
+        method: POST
+        url: http://localhost:8090/v1/post
+        bodyfile: testdata/createpost.json.tmpl
+        #info: request is {{.result.request.method}} {{.result.request.url}} {{.result.request.body}}
+        assertions:
+          - result.statuscode ShouldEqual 201
+          - result.request.body ShouldNotBeEmpty
+          - result.request.body ShouldContainSubstring "/r/nvidia"
+          - result.bodyjson ShouldContainKey id
+  - name: Create Post Second Item - 5 seconds timeout
+    steps:
+      - type: http
+        method: POST
+        url: http://localhost:8090/v1/post
+        bodyfile: testdata/createpost.json.tmpl
+        #info: request is {{.result.request.method}} {{.result.request.url}} {{.result.request.body}}
+        assertions:
+          - result.statuscode ShouldEqual 201
+          - result.request.body ShouldNotBeEmpty
+          - result.request.body ShouldContainSubstring "/r/nvidia"
+          - result.bodyjson ShouldContainKey id
+  - name: GET Feed 2 items - 5 seconds timeout - no query params
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:8090/v1/feed
+        timeout: 5
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.timeseconds ShouldBeLessThan 2
+          - result.bodyjson ShouldContainKey pagination
+          - result.bodyjson ShouldContainKey data
+          - result.bodyjson.pagination ShouldNotBeEmpty
+          - result.bodyjson.__len__ ShouldBeGreaterThanOrEqualTo 2
+          - result.bodyjson.pagination.total ShouldEqual 2
+          - result.bodyjson.pagination.pagecount ShouldEqual 2
+          - result.bodyjson.pagination.limit ShouldEqual 25
+          - result.bodyjson.pagination.page ShouldEqual 1
+  - name: Create Promoted Post - 5 seconds timeout - second item
+    steps:
+      - type: http
+        method: POST
+        url: http://localhost:8090/v1/post
+        bodyfile: testdata/createpromotedpost.json.tmpl
+        #info: request is {{.result.request.method}} {{.result.request.url}} {{.result.request.body}}
+        assertions:
+          - result.statuscode ShouldEqual 201
+          - result.request.body ShouldNotBeEmpty
+          - result.request.body ShouldContainSubstring "/r/3DS"
+          - result.bodyjson ShouldContainKey id
+  - name: Create Second Promoted Post - 5 seconds timeout - second item
+    steps:
+      - type: http
+        method: POST
+        url: http://localhost:8090/v1/post
+        bodyfile: testdata/createpromotedpost.json.tmpl
+        #info: request is {{.result.request.method}} {{.result.request.url}} {{.result.request.body}}
+        assertions:
+          - result.statuscode ShouldEqual 201
+          - result.request.body ShouldNotBeEmpty
+          - result.request.body ShouldContainSubstring "/r/3DS"
+          - result.bodyjson ShouldContainKey id
+  - name: GET Feed 2 items - 5 seconds timeout - no query params (2 promoted in DB, but we have only 2 posts in feed)
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:8090/v1/feed
+        timeout: 5
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.timeseconds ShouldBeLessThan 2
+          - result.bodyjson ShouldContainKey pagination
+          - result.bodyjson ShouldContainKey data
+          - result.bodyjson.pagination ShouldNotBeEmpty
+          - result.bodyjson.__len__ ShouldBeGreaterThanOrEqualTo 2
+          - result.bodyjson.pagination.total ShouldEqual 2
+          - result.bodyjson.pagination.pagecount ShouldEqual 2
+          - result.bodyjson.pagination.limit ShouldEqual 25
+          - result.bodyjson.pagination.page ShouldEqual 1
+  - name: Create Post Third Item - 5 seconds timeout
+    steps:
+      - type: http
+        method: POST
+        url: http://localhost:8090/v1/post
+        bodyfile: testdata/createpost.json.tmpl
+        #info: request is {{.result.request.method}} {{.result.request.url}} {{.result.request.body}}
+        assertions:
+          - result.statuscode ShouldEqual 201
+          - result.request.body ShouldNotBeEmpty
+          - result.request.body ShouldContainSubstring "/r/nvidia"
+          - result.bodyjson ShouldContainKey id
+  - name: GET Feed 3 items - 5 seconds timeout - no query params (2 promoted in DB, 3 not promoted posts, 4 posts in feed)
+    steps:
+      - type: http
+        method: GET
+        url: http://localhost:8090/v1/feed
+        timeout: 5
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.timeseconds ShouldBeLessThan 2
+          - result.bodyjson ShouldContainKey pagination
+          - result.bodyjson ShouldContainKey data
+          - result.bodyjson.pagination ShouldNotBeEmpty
+          - result.bodyjson.__len__ ShouldBeGreaterThanOrEqualTo 2
+          - result.bodyjson.pagination.total ShouldEqual 3
+          - result.bodyjson.pagination.pagecount ShouldEqual 4
+          - result.bodyjson.pagination.limit ShouldEqual 25
+          - result.bodyjson.pagination.page ShouldEqual 1

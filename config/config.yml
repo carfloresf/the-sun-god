@@ -1,0 +1,9 @@
+http:
+  address: '0.0.0.0'
+  port: '8083'
+
+db:
+  db_file: 'db/feed.db'
+
+subreddits:
+  sr_file: 'data/subreddits.txt'
