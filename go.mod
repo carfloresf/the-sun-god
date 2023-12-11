@@ -3,7 +3,7 @@ module github.com/carfloresf/the-sun-god
 go 1.19
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.0
+	github.com/DATA-DOG/go-sqlmock v1.5.1
 	github.com/gin-contrib/gzip v0.0.6
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
