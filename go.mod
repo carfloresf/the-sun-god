@@ -7,7 +7,7 @@ require (
 	github.com/gin-contrib/gzip v0.0.6
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.5.0
 	github.com/ilyakaznacheev/cleanenv v1.4.2
 	github.com/jaswdr/faker v1.16.0
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
